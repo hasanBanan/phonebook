@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.phonebook.R;
-import com.example.phonebook.presenter.MainActivity;
+import com.example.phonebook.presenter.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View {
 

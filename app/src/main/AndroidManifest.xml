@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
-        <activity android:name=".presenter.MainActivity"/>
+        <activity android:name=".presenter.main.MainActivity"/>
 
         <activity android:name=".presenter.splash.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar.Launcher">
