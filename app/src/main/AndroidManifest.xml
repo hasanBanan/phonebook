@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
-        <activity android:name=".presenter.main.MainActivity"/>
+        <activity android:name=".presenter.main.MainActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".presenter.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

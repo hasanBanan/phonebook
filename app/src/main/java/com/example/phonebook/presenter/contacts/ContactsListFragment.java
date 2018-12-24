@@ -50,7 +50,7 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        loadData();
+        mPresenter.loadData(getContext());
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
@@ -64,26 +64,6 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
     public void showProgressBar(Boolean show) {
         Log.d(this.getTag(), "showProgressBar");
 
-    }
-
-    @Override
-    public void loadData() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && getContext().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-        } else {
-            mPresenter.loadData(this.getContext());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mPresenter.loadData(this.getContext());
-            } else {
-                Toast.makeText(this.getContext(), "Нет доступа к контактам", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     @Override

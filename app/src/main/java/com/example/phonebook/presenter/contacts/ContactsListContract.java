@@ -11,8 +11,6 @@ public interface ContactsListContract {
     interface View{
         void showProgressBar(Boolean show);
 
-        void loadData();
-
         void showList(List<Contact> contacts);
     }
 

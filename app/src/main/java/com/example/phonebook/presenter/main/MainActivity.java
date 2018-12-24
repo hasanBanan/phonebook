@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity{
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, new TabbedFragment())
+                .addToBackStack("test")
                 .commit();
 
     }

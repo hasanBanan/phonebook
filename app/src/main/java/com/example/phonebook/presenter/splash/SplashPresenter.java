@@ -7,7 +7,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     @Override
     public void initView(SplashContract.View view) {
         this.view = view;
-        this.view.startMainActivity();
+        this.view.checkPermission();
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.example.phonebook.presenter.splash;
 
 public interface SplashContract {
     interface View{
+        void checkPermission();
+
         void startMainActivity();
     }
 
