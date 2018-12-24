@@ -9,6 +9,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +46,12 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
         holder.icon.setImageURI(list.get(position).getIconUri());
         if(holder.icon.getDrawable() == null) {
             holder.icon.setImageResource(R.drawable.ic_circle_fond);
-
             holder.icon.setColorFilter(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)), PorterDuff.Mode.MULTIPLY);
             if(!list.get(position).name.isEmpty())
                 holder.iconSymbol.setText(String.valueOf(list.get(position).getName().charAt(0)));
+        }else {
+            holder.iconSymbol.setText("");
+            holder.icon.setColorFilter(null);
         }
 
         if (list.get(position).getStarred().equals("1")) {

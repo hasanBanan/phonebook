@@ -27,7 +27,11 @@ import java.util.List;
  */
 public class ContactsListFragment extends Fragment implements ContactsListContract.View {
 
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
+    public static int ALL_CONTACTS = 0;
+    public static int FAVORITE_CONTACTS = 1;
+    public int CURRENT_LIST_TYPE;
+
     private ContactsListContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private ContactsListAdapter mAdapter;
@@ -45,12 +49,17 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts_list, container, false);
 
+        CURRENT_LIST_TYPE = getArguments().getInt("type");
+
         mRecyclerView = view.findViewById(R.id.contacts_list);
 //        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mPresenter.loadData(getContext());
+        if(CURRENT_LIST_TYPE == ALL_CONTACTS)
+            mPresenter.loadContacts(getContext());
+        else
+            mPresenter.loadFavoritesContacts(getContext());
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());

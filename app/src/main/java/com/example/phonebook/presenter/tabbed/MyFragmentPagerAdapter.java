@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.phonebook.R;
+import android.os.Bundle;
 import com.example.phonebook.presenter.contacts.ContactsListFragment;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -21,10 +21,24 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                return new ContactsListFragment();
-            case 1:
-                return new ContactsListFragment();
+            case 0:{
+                ContactsListFragment fragment = new ContactsListFragment();
+
+                Bundle args = new Bundle();
+                args.putInt("type", ContactsListFragment.ALL_CONTACTS);
+                fragment.setArguments(args);
+
+                return fragment;
+            }
+            case 1:{
+                ContactsListFragment fragment = new ContactsListFragment();
+
+                Bundle args = new Bundle();
+                args.putInt("type", ContactsListFragment.FAVORITE_CONTACTS);
+                fragment.setArguments(args);
+
+                return fragment;
+            }
             default:
                 return null;
         }

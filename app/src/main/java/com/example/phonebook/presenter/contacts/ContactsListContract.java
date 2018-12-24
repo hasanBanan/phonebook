@@ -17,9 +17,9 @@ public interface ContactsListContract {
     interface Presenter{
         void initView(ContactsListContract.View view);
 
-        void loadData(Context context);
+        void loadContacts(Context context);
 
-        void getFavoritesContacts(Context context);
+        void loadFavoritesContacts(Context context);
 
         void destroy();
     }

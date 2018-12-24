@@ -25,7 +25,7 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
     }
 
     @Override
-    public void loadData(Context context) {
+    public void loadContacts(Context context) {
         List<Contact> list = new ArrayList();
 
         ContentResolver cr = context.getContentResolver();
@@ -82,7 +82,7 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
     }
 
     @Override
-    public void getFavoritesContacts(Context context) {
+    public void loadFavoritesContacts(Context context) {
         List<Contact> list = new ArrayList();
 
         ContentResolver cr = context.getContentResolver();
