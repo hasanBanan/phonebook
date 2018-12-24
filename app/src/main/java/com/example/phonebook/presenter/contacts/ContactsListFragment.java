@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.phonebook.R;
+import com.example.phonebook.domains.Contact;
 import com.example.phonebook.presenter.tabbed.MyFragmentPagerAdapter;
 
 import java.util.List;
@@ -23,8 +27,10 @@ import java.util.List;
  */
 public class ContactsListFragment extends Fragment implements ContactsListContract.View {
 
-    ContactsListContract.Presenter mPresenter;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private ContactsListContract.Presenter mPresenter;
+    private RecyclerView mRecyclerView;
+    private ContactsListAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,15 +38,26 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
 
         mPresenter = new ContactsListPresenter();
         mPresenter.initView(this);
-        loadData();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_contacts_list, container, false);
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts_list, container, false);
+        mRecyclerView = view.findViewById(R.id.contacts_list);
+//        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        loadData();
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                layoutManager.getOrientation());
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        return view;
     }
 
     @Override
@@ -70,7 +87,9 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
     }
 
     @Override
-    public void showList(List<String> contacts) {
-        Log.d(this.getTag(), "showList");
+    public void showList(List<Contact> contacts) {
+        mAdapter = new ContactsListAdapter(contacts);
+        mRecyclerView.setAdapter(mAdapter);
+        Log.d(this.getTag(), contacts.toString());
     }
 }

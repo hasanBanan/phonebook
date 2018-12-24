@@ -2,6 +2,8 @@ package com.example.phonebook.presenter.contacts;
 
 import android.content.Context;
 
+import com.example.phonebook.domains.Contact;
+
 import java.util.List;
 
 public interface ContactsListContract {
@@ -11,15 +13,15 @@ public interface ContactsListContract {
 
         void loadData();
 
-        void showList(List<String> contacts);
+        void showList(List<Contact> contacts);
     }
 
     interface Presenter{
         void initView(ContactsListContract.View view);
 
-        void getContacts();
-
         void loadData(Context context);
+
+        void getFavoritesContacts(Context context);
 
         void destroy();
     }
