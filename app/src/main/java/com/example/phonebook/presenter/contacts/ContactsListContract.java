@@ -21,6 +21,8 @@ public interface ContactsListContract {
 
         void loadFavoritesContacts(Context context);
 
+        void changeFavorite(Context context, int starred, long phone);
+
         void destroy();
     }
 }

@@ -24,11 +24,13 @@ import java.util.Random;
 
 public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.MyViewHolder> {
     private List<Contact> list;
+    ContactsListContract.Presenter mPresenter;
     public Context context;
     Random rnd = new Random();
 
-    ContactsListAdapter(List<Contact> list) {
+    ContactsListAdapter(List<Contact> list, ContactsListContract.Presenter mPresenter) {
         this.list = list;
+        this.mPresenter = mPresenter;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.name.setText(list.get(position).getName());
         holder.phone.setText(list.get(position).getNumber());
 
@@ -47,20 +49,32 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
         if(holder.icon.getDrawable() == null) {
             holder.icon.setImageResource(R.drawable.ic_circle_fond);
             holder.icon.setColorFilter(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)), PorterDuff.Mode.MULTIPLY);
-            if(!list.get(position).name.isEmpty())
+            if(!list.get(position).getName().isEmpty())
                 holder.iconSymbol.setText(String.valueOf(list.get(position).getName().charAt(0)));
         }else {
             holder.iconSymbol.setText("");
             holder.icon.setColorFilter(null);
         }
 
-        if (list.get(position).getStarred().equals("1")) {
+        if (list.get(position).getStarred() == 1) {
             holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
         } else
             holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
+
+        holder.electBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(list.get(position).getStarred() == 1) {
+                    mPresenter.changeFavorite(context, 0, list.get(position).getId());
+                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
+                }else {
+                    mPresenter.changeFavorite(context, 1, list.get(position).getId());
+                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
+                }
+            }
+        });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return list.size();

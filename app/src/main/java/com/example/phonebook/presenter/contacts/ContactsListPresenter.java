@@ -6,8 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.util.Log;
 
+import com.example.phonebook.data.ContactRepository;
 import com.example.phonebook.domains.Contact;
 
 import java.util.ArrayList;
@@ -18,6 +18,11 @@ import java.util.List;
 public class ContactsListPresenter implements ContactsListContract.Presenter {
 
     private ContactsListContract.View view;
+    private ContactRepository repository;
+
+    public ContactsListPresenter() {
+        repository = new ContactRepository();
+    }
 
     @Override
     public void initView(ContactsListContract.View view) {
@@ -34,11 +39,11 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
 
         if ((cur != null ? cur.getCount() : 0) > 0) {
             while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
+                long id = cur.getLong(
                         cur.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cur.getString(cur.getColumnIndex(
                         ContactsContract.Contacts.DISPLAY_NAME));
-                String starred = cur.getString(cur.getColumnIndex(
+                int starred = cur.getInt(cur.getColumnIndex(
                         ContactsContract.Contacts.STARRED));
 
                 if (cur.getInt(cur.getColumnIndex(
@@ -51,12 +56,12 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
                             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                             null,
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
+                            new String[]{String.valueOf(id)}, null);
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                        list.add(new Contact(name, phoneNo, pURI, starred));
+                        list.add(new Contact(id, name, phoneNo, pURI, starred));
                     }
                     pCur.close();
                 }
@@ -72,7 +77,7 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
                 @Override
                 public int compare(Contact contact1, Contact contact2)
                 {
-                    return contact1.name.compareToIgnoreCase(contact2.name);
+                    return contact1.getName().compareToIgnoreCase(contact2.getName());
                 }
             });
 
@@ -91,7 +96,7 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
 
         if ((cur != null ? cur.getCount() : 0) > 0) {
             while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
+                long id = cur.getLong(
                         cur.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cur.getString(cur.getColumnIndex(
                         ContactsContract.Contacts.DISPLAY_NAME));
@@ -106,12 +111,12 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
                             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                             null,
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
+                            new String[]{String.valueOf(id)}, null);
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                        list.add(new Contact(name, phoneNo, pURI, "1"));
+                        list.add(new Contact(id, name, phoneNo, pURI, 1));
                     }
                     pCur.close();
                 }
@@ -127,13 +132,18 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
                 @Override
                 public int compare(Contact contact1, Contact contact2)
                 {
-                    return contact1.name.compareToIgnoreCase(contact2.name);
+                    return contact1.getName().compareToIgnoreCase(contact2.getName());
                 }
             });
 
             view.showProgressBar(false);
             view.showList(list);
         }
+    }
+
+    @Override
+    public void changeFavorite(Context context, int starred, long id) {
+        repository.changeFavorite(context, starred, id);
     }
 
     @Override

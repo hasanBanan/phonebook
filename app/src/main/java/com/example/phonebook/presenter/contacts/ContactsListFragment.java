@@ -77,7 +77,7 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
 
     @Override
     public void showList(List<Contact> contacts) {
-        mAdapter = new ContactsListAdapter(contacts);
+        mAdapter = new ContactsListAdapter(contacts, mPresenter);
         mRecyclerView.setAdapter(mAdapter);
         Log.d(this.getTag(), contacts.toString());
     }
