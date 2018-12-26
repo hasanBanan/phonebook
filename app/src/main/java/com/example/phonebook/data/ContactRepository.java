@@ -32,8 +32,8 @@ public class ContactRepository {
         context.getContentResolver().update(ContactsContract.Contacts.CONTENT_URI, values,
                 ContactsContract.Contacts._ID + "= ?", new String[] { String.valueOf(contactId) });
 
-        cPresenter.dataUpdated();
         fPresenter.dataUpdated();
+        cPresenter.dataUpdated();
     }
 
     public void initPresenter(ContactsListContract.Presenter presenter){

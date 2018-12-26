@@ -62,12 +62,12 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
                     mPresenter.changeFavorite(context, 0, list.get(position).getId());
                     list.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeRemoved(position, getItemCount());
+                    notifyItemRangeRemoved(position, list.size());
 //                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
                 }else {
+                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
                     list.get(position).setStarred(1);
                     mPresenter.changeFavorite(context, 1, list.get(position).getId());
-                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
                 }
             }
         });

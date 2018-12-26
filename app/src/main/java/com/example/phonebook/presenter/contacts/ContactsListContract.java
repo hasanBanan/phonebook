@@ -7,7 +7,6 @@ import com.example.phonebook.domains.Contact;
 import java.util.List;
 
 public interface ContactsListContract {
-
     interface View{
         void showProgressBar(Boolean show);
 

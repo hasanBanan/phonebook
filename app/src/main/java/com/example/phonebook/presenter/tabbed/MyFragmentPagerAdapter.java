@@ -18,7 +18,6 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
-    // This determines the fragment for each tab
     @Override
     public Fragment getItem(int position) {
         switch (position) {
@@ -33,16 +32,13 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    // This determines the number of tabs
     @Override
     public int getCount() {
         return 2;
     }
 
-    // This determines the title for each tab
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         switch (position) {
             case 0:
                 return "Контакты";

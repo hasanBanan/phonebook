@@ -65,13 +65,13 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
             @Override
             public void onClick(View v) {
                 if(list.get(position).getStarred() == 1) {
+                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
                     list.get(position).setStarred(0);
                     mPresenter.changeFavorite(context, 0, list.get(position).getId());
-                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
                 }else {
+                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
                     list.get(position).setStarred(1);
                     mPresenter.changeFavorite(context, 1, list.get(position).getId());
-                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
                 }
             }
         });

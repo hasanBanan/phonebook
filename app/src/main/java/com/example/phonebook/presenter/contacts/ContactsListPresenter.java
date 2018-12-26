@@ -1,19 +1,10 @@
 package com.example.phonebook.presenter.contacts;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
 
+import android.content.Context;
 import com.example.phonebook.data.ContactRepository;
-import com.example.phonebook.data.api.ContactManager;
 import com.example.phonebook.domains.Contact;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ContactsListPresenter implements ContactsListContract.Presenter {
@@ -34,20 +25,35 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
     }
 
     @Override
-    public void loadContacts(Context context) {
+    public void loadContacts(final Context context) {
         this.context = context;
 
-        view.showProgressBar(true);
+        final List<Contact> list = repository.getAllContacts(context);
 
-        view.showList(repository.getAllContacts(context));
+        ((ContactsListFragment)view).getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.showProgressBar(true);
 
-        view.showProgressBar(true);
+                view.showList(list);
+
+                view.showProgressBar(true);
+            }
+        });
+
     }
 
     @Override
-    public void changeFavorite(Context context, int starred, long id) {
+    public void changeFavorite(final Context context, final int starred, final long id) {
         viewChanging = false;
-        repository.changeFavorite(context, starred, id);
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                repository.changeFavorite(context, starred, id);
+            }
+        });
+
+        t.start();
     }
 
     @Override
