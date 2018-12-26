@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import android.os.Bundle;
 import com.example.phonebook.presenter.contacts.ContactsListFragment;
+import com.example.phonebook.presenter.favorites.FavoritesListFragment;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -22,22 +23,10 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:{
-                ContactsListFragment fragment = new ContactsListFragment();
-
-                Bundle args = new Bundle();
-                args.putInt("type", ContactsListFragment.ALL_CONTACTS);
-                fragment.setArguments(args);
-
-                return fragment;
+                return new ContactsListFragment();
             }
             case 1:{
-                ContactsListFragment fragment = new ContactsListFragment();
-
-                Bundle args = new Bundle();
-                args.putInt("type", ContactsListFragment.FAVORITE_CONTACTS);
-                fragment.setArguments(args);
-
-                return fragment;
+                return new FavoritesListFragment();
             }
             default:
                 return null;
@@ -58,13 +47,9 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Контакты";
             case 1:
-                return "Избранное";
+                return "Избранные";
             default:
                 return null;
         }
-    }
-
-    enum TypeList {
-        ALL, ELECT
     }
 }

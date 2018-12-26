@@ -1,40 +1,34 @@
-package com.example.phonebook.presenter.contacts;
+package com.example.phonebook.presenter.favorites;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.phonebook.R;
 import com.example.phonebook.domains.Contact;
+
 import java.util.List;
 import java.util.Random;
 
-public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.MyViewHolder> {
+public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdapter.MyViewHolder> {
     private List<Contact> list;
-    ContactsListContract.Presenter mPresenter;
+    FavoritesListContract.Presenter mPresenter;
     public Context context;
     Random rnd = new Random();
 
-    ContactsListAdapter(List<Contact> list, ContactsListContract.Presenter mPresenter) {
+    FavoritesListAdapter(List<Contact> list, FavoritesListContract.Presenter mPresenter) {
         this.list = list;
         this.mPresenter = mPresenter;
     }
 
     @Override
-    public ContactsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavoritesListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_contact, parent, false);
         return  new MyViewHolder(itemView);
@@ -65,9 +59,11 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
             @Override
             public void onClick(View v) {
                 if(list.get(position).getStarred() == 1) {
-                    list.get(position).setStarred(0);
                     mPresenter.changeFavorite(context, 0, list.get(position).getId());
-                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
+                    list.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeRemoved(position, getItemCount());
+//                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
                 }else {
                     list.get(position).setStarred(1);
                     mPresenter.changeFavorite(context, 1, list.get(position).getId());

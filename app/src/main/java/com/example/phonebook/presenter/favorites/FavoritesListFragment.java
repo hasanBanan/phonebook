@@ -1,10 +1,7 @@
-package com.example.phonebook.presenter.contacts;
+package com.example.phonebook.presenter.favorites;
 
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,28 +11,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.phonebook.R;
 import com.example.phonebook.domains.Contact;
-import com.example.phonebook.presenter.tabbed.MyFragmentPagerAdapter;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsListFragment extends Fragment implements ContactsListContract.View {
+public class FavoritesListFragment extends Fragment implements FavoritesListContract.View {
 
-    private ContactsListContract.Presenter mPresenter;
+
+    private FavoritesListContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
-    private ContactsListAdapter mAdapter;
+    private FavoritesListAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = new ContactsListPresenter();
+        mPresenter = new FavoritesListPresenter();
         mPresenter.initView(this);
     }
 
@@ -67,13 +63,8 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
 
     @Override
     public void showList(List<Contact> contacts) {
-        mAdapter = new ContactsListAdapter(contacts, mPresenter);
+        mAdapter = new FavoritesListAdapter(contacts, mPresenter);
         mRecyclerView.setAdapter(mAdapter);
         Log.d(this.getTag(), contacts.toString());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 }
