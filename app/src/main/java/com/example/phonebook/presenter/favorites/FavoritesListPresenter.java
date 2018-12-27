@@ -3,12 +3,16 @@ package com.example.phonebook.presenter.favorites;
 import android.content.Context;
 
 import com.example.phonebook.data.ContactRepository;
+import com.example.phonebook.domains.Contact;
+import com.example.phonebook.presenter.contacts.ContactsListFragment;
+
+import java.util.List;
 
 public class FavoritesListPresenter implements FavoritesListContract.Presenter {
 
     private FavoritesListContract.View view;
     private ContactRepository repository;
-    private boolean viewChanging;
+    private boolean viewChanging = true;
     private Context context;
 
     public FavoritesListPresenter() {
@@ -22,20 +26,35 @@ public class FavoritesListPresenter implements FavoritesListContract.Presenter {
     }
 
     @Override
-    public void loadContacts(Context context) {
+    public void loadContacts(final Context context) {
         this.context = context;
 
-        view.showProgressBar(true);
+        final List<Contact> list = repository.getFavoriteContacts(context);
 
-        view.showList(repository.getFavoriteContacts(context));
+        ((FavoritesListFragment)view).getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.showProgressBar(true);
 
-        view.showProgressBar(true);
+                view.showList(list);
+
+                view.showProgressBar(true);
+            }
+        });
+
     }
 
     @Override
-    public void changeFavorite(Context context, int starred, long id) {
+    public void changeFavorite(final Context context, final int starred, final long id) {
         viewChanging = false;
-        repository.changeFavorite(context, starred, id);
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                repository.changeFavorite(context, starred, id);
+            }
+        });
+
+        t.start();
     }
 
     @Override

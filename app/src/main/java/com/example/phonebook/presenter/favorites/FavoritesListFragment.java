@@ -41,7 +41,7 @@ public class FavoritesListFragment extends Fragment implements FavoritesListCont
         View view = inflater.inflate(R.layout.fragment_contacts_list, container, false);
 
         mRecyclerView = view.findViewById(R.id.contacts_list);
-//        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
 
