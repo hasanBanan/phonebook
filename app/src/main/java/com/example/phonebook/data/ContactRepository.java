@@ -27,13 +27,14 @@ public class ContactRepository {
     }
 
     public void changeFavorite(Context context, int starred, long contactId){
-        ContentValues values = new ContentValues();
-        values.put(ContactsContract.Contacts.STARRED, starred);
-        context.getContentResolver().update(ContactsContract.Contacts.CONTENT_URI, values,
-                ContactsContract.Contacts._ID + "= ?", new String[] { String.valueOf(contactId) });
+        ContactManager.getInstance().changeFavorite(context, starred, contactId);
 
         fPresenter.dataUpdated();
         cPresenter.dataUpdated();
+    }
+
+    public void addContact(Contact contact, Context context){
+        ContactManager.getInstance().addContact(contact, context);
     }
 
     public void initPresenter(ContactsListContract.Presenter presenter){

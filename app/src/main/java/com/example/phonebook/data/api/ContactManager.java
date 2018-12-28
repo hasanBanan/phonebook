@@ -2,6 +2,7 @@ package com.example.phonebook.data.api;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -123,6 +124,32 @@ public class ContactManager {
         }
 
         return list;
+    }
+
+    public void changeFavorite(Context context, int starred, long contactId) {
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.Contacts.STARRED, starred);
+        context.getContentResolver().update(ContactsContract.Contacts.CONTENT_URI, values,
+                ContactsContract.Contacts._ID + "= ?", new String[]{String.valueOf(contactId)});
+    }
+
+    public void addContact(Contact contact, Context context){
+        ContentValues valuess = new ContentValues();
+        Uri rawContactUri = context.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, valuess);
+// Get the newly created contact raw id.
+        long ret = ContentUris.parseId(rawContactUri);
+
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, ret);
+        values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getNumber());
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM);
+        context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
+
+        values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, ret);
+        values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.getName());
+        context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
     }
 
     public static ContactManager getInstance(){
