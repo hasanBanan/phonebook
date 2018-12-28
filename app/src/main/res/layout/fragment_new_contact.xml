@@ -66,12 +66,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contact_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/header"
+        android:src="@drawable/ic_photo_camera"/>
+
     <EditText
         android:id="@+id/full_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginVertical="10dp"
-        android:layout_below="@id/header"
+        android:layout_below="@id/contact_photo"
         android:inputType="text"
         android:hint="Полное имя"
         android:textSize="14dp"

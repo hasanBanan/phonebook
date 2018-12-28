@@ -6,10 +6,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
 import com.example.phonebook.presenter.contacts.ContactsListFragment;
 import com.example.phonebook.presenter.favorites.FavoritesListFragment;
 
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+public class MyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private Context mContext;
 

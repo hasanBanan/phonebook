@@ -48,7 +48,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
         holder.icon.setImageURI(list.get(position).getIconUri());
         if(holder.icon.getDrawable() == null) {
             holder.icon.setImageResource(R.drawable.ic_circle_fond);
-            holder.icon.setColorFilter(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)), PorterDuff.Mode.MULTIPLY);
+            holder.icon.setColorFilter(Color.argb(255, rnd.nextInt(90)+90, rnd.nextInt(90)+90, rnd.nextInt(90)+90), PorterDuff.Mode.MULTIPLY);
             if(!list.get(position).getName().isEmpty())
                 holder.iconSymbol.setText(String.valueOf(list.get(position).getName().charAt(0)));
         }else {

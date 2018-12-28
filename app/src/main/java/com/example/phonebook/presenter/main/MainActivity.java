@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new NewContactFragment())
-                        .addToBackStack(null)
+                        .addToBackStack("list")
                         .commit();
             }
         });
