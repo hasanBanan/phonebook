@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdapter.MyViewHolder> {
-    private List<Contact> list;
+    public List<Contact> list;
     FavoritesListContract.Presenter mPresenter;
     public Context context;
     Random rnd = new Random();
@@ -55,6 +56,14 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
         } else
             holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
 
+
+        holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(1, position, 0, "Delete");
+            }
+        });
+
         holder.electBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +71,8 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
                     mPresenter.changeFavorite(context, 0, list.get(position).getId());
                     list.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeRemoved(position, list.size());
+                    if(!list.isEmpty())
+                        notifyItemRangeRemoved(position, list.size());
 //                    holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star24dp));
                 }else {
                     holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));

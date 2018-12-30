@@ -33,11 +33,7 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
         ((ContactsListFragment)view).getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                view.showProgressBar(true);
-
                 view.showList(list);
-
-                view.showProgressBar(true);
             }
         });
 
@@ -57,12 +53,22 @@ public class ContactsListPresenter implements ContactsListContract.Presenter {
     }
 
     @Override
+    public void delete(final Context context, final long id) {
+        viewChanging = false;
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                repository.delete(context, id);
+            }
+        });
+
+        t.start();
+    }
+
+    @Override
     public void dataUpdated() {
         if(viewChanging)
             loadContacts(context);
         else viewChanging = true;
     }
-
-    @Override
-    public void destroy() {}
 }

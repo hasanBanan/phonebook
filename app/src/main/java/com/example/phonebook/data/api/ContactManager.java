@@ -11,6 +11,8 @@ import android.provider.ContactsContract;
 import com.example.phonebook.domains.Contact;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,6 +132,21 @@ public class ContactManager {
         return list;
     }
 
+    public void delete(Context context, long id){
+
+        ContentResolver cr = context.getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, ContactsContract.Contacts._ID + " = ?", new String[]{String.valueOf(id)}, null);
+
+        while (cur.moveToNext())
+        {
+            String lookupKey = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+            Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, lookupKey);
+
+            cr.delete(uri, null, null);
+        }
+    }
+
     public void changeFavorite(Context context, int starred, long contactId) {
         ContentValues values = new ContentValues();
         values.put(ContactsContract.Contacts.STARRED, starred);
@@ -146,9 +163,8 @@ public class ContactManager {
         InputStream iStream = null;
         byte[] inputData = null;
         try {
-            iStream = context.getContentResolver().openInputStream(contact.getIconUri());
-            inputData = getBytes(iStream);
-        } catch (Exception e) {
+            inputData = getBytes(contact.getIconUri());
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -164,32 +180,43 @@ public class ContactManager {
         values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.getName());
         context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
 
+
+        int photoRow = -1;
+        String where = ContactsContract.Data.RAW_CONTACT_ID + " = " + contact.getId() + " AND " + ContactsContract.Data.MIMETYPE + "=='" + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'";
+        Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, where, null, null);
+        int idIdx = cursor.getColumnIndexOrThrow(ContactsContract.Data._ID);
+        if (cursor.moveToFirst()) {
+            photoRow = cursor.getInt(idIdx);
+        }
+        cursor.close();
+
         if(contact.getIconUri() != null) {
-            ContentValues contentValues = new ContentValues();
+            values = new ContentValues();
             // Set raw contact id. Data table only has raw_contact_id.
-            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, contact.getId());
-            // Set mimetype first.
-            contentValues.put(ContactsContract.CommonDataKinds.Photo.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE);
-            // Set photo
-            contentValues.put(ContactsContract.CommonDataKinds.Photo.PHOTO, inputData);
-            // Set photo file id.
-//            contentValues.put(ContactsContract.CommonDataKinds.Photo.PHOTO_FILE_ID, contact.getPhotoFieldId());
+            values.put(ContactsContract.Data.RAW_CONTACT_ID, contact.getId());
+            values.put(ContactsContract.Data.IS_SUPER_PRIMARY, 1);
+            values.put(ContactsContract.CommonDataKinds.Photo.PHOTO, inputData);
+            values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE);
 
             // Insert to data table.
-            context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, contentValues);
+            context.getContentResolver().update(ContactsContract.Data.CONTENT_URI, values, ContactsContract.Data._ID + " = " + photoRow, null);
         }
     }
 
-    public byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
+    public byte[] getBytes(Uri data) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(new File(data.getPath()));
+            byte[] buf = new byte[1024];
+            int n;
+            while (-1 != (n = fis.read(buf)))
+                baos.write(buf, 0, n);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return byteBuffer.toByteArray();
+        byte[] bbytes = baos.toByteArray();
+        return bbytes;
     }
 
     public static ContactManager getInstance(){

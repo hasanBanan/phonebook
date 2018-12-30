@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface FavoritesListContract {
     interface View{
-        void showProgressBar(Boolean show);
-
         void showList(List<Contact> contacts);
     }
 
@@ -20,8 +18,8 @@ public interface FavoritesListContract {
 
         void changeFavorite(Context context, int starred, long id);
 
-        void dataUpdated();
+        void delete(Context context, long id);
 
-        void destroy();
+        void dataUpdated();
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -52,13 +53,22 @@ public class FavoritesListFragment extends Fragment implements FavoritesListCont
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        registerForContextMenu(mRecyclerView);
+
         return view;
     }
 
     @Override
-    public void showProgressBar(Boolean show) {
-        Log.d(this.getTag(), "showProgressBar");
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getGroupId() == 1) {
 
+            mPresenter.delete(getContext(), mAdapter.list.get(item.getItemId()).getId());
+
+            mAdapter.list.remove(item.getItemId());
+            mAdapter.notifyItemChanged(item.getItemId());
+            mAdapter.notifyItemRangeChanged(item.getItemId(), mAdapter.getItemCount());
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

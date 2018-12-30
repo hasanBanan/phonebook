@@ -28,16 +28,20 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new NewContactFragment())
+                        .add(R.id.fragment_container, new NewContactFragment())
                         .addToBackStack("list")
                         .commit();
+
+                ((View) fab).setVisibility(View.INVISIBLE);
             }
         });
+
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onBackPressed() {
+        super.onBackPressed();
+        ((View) fab).setVisibility(View.VISIBLE);
     }
 }

@@ -11,12 +11,17 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.phonebook.R;
+import com.example.phonebook.data.api.ContactManager;
 import com.example.phonebook.domains.Contact;
 import com.example.phonebook.presenter.tabbed.MyFragmentPagerAdapter;
 
@@ -29,6 +34,7 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
 
     private ContactsListContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
+    private ProgressBar progressBar;
     private ContactsListAdapter mAdapter;
 
     @Override
@@ -44,10 +50,24 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts_list, container, false);
 
+        View fab = getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+
         mRecyclerView = view.findViewById(R.id.contacts_list);
-//        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext()){
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                } catch (IndexOutOfBoundsException e) {
+                    Log.e("Error", "IndexOutOfBoundsException in RecyclerView happens");
+                }
+            }
+        };
         mRecyclerView.setLayoutManager(layoutManager);
+
+        progressBar = view.findViewById(R.id.progress_bar);
 
         mPresenter.loadContacts(getContext());
 
@@ -56,13 +76,22 @@ public class ContactsListFragment extends Fragment implements ContactsListContra
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        registerForContextMenu(mRecyclerView);
+
         return view;
     }
 
     @Override
-    public void showProgressBar(Boolean show) {
-        Log.d(this.getTag(), "showProgressBar");
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getGroupId() == 0) {
 
+            mPresenter.delete(getContext(), mAdapter.list.get(item.getItemId()).getId());
+
+            mAdapter.list.remove(item.getItemId());
+            mAdapter.notifyItemChanged(item.getItemId());
+            mAdapter.notifyItemRangeChanged(item.getItemId(), mAdapter.getItemCount());
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

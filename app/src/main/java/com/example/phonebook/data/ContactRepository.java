@@ -33,8 +33,18 @@ public class ContactRepository {
         cPresenter.dataUpdated();
     }
 
+    public void delete(Context context, long contactId) {
+        ContactManager.getInstance().delete(context, contactId);
+
+        fPresenter.dataUpdated();
+        cPresenter.dataUpdated();
+    }
+
     public void addContact(Contact contact, Context context){
         ContactManager.getInstance().addContact(contact, context);
+
+//        fPresenter.dataUpdated();
+//        cPresenter.dataUpdated();
     }
 
     public void initPresenter(ContactsListContract.Presenter presenter){

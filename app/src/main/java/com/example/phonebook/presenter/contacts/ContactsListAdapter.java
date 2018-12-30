@@ -1,20 +1,14 @@
 package com.example.phonebook.presenter.contacts;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.phonebook.R;
@@ -23,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.MyViewHolder> {
-    private List<Contact> list;
+    public List<Contact> list;
     ContactsListContract.Presenter mPresenter;
     public Context context;
     Random rnd = new Random();
@@ -56,6 +50,15 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
             holder.icon.setColorFilter(null);
         }
 
+        holder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(0, position, 0, "Delete");
+            }
+
+
+        });
+
         if (list.get(position).getStarred() == 1) {
             holder.electBtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_favorite));
         } else
@@ -82,7 +85,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
         return list.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView icon;
         TextView iconSymbol;
