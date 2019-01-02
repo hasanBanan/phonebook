@@ -5,6 +5,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -25,6 +27,10 @@ import com.example.phonebook.R;
 import com.example.phonebook.domains.Contact;
 import com.example.phonebook.presenter.tabbed.TabbedFragment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import static android.app.Activity.RESULT_OK;
 
 public class NewContactFragment extends Fragment implements NewContactContract.View {
@@ -36,9 +42,11 @@ public class NewContactFragment extends Fragment implements NewContactContract.V
     private EditText nameEditText;
     private EditText phoneEditText;
 
-    Uri selectedImageUri = null;
+    private Uri selectedImageUri = null;
+    private ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
     private NewContactContract.Presenter mPresenter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,9 +61,6 @@ public class NewContactFragment extends Fragment implements NewContactContract.V
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_new_contact, container, false);
-
-
-        view.setEnabled(true);
 
         mProgressBar = view.findViewById(R.id.progress_bar);
         backArrow = view.findViewById(R.id.back_btn);
@@ -94,19 +99,9 @@ public class NewContactFragment extends Fragment implements NewContactContract.V
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
-                    Contact contact = new Contact(0, nameEditText.getText().toString(), phoneEditText.getText().toString(), selectedImageUri, 0);
+                    Contact contact = new Contact(0, nameEditText.getText().toString(), phoneEditText.getText().toString(), selectedImageUri, 0, stream.toByteArray());
 
                     mPresenter.addContact(contact, getContext());
-
-
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-                        fm.popBackStack();
-                    }
-
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new TabbedFragment())
-                            .commit();
                 }else
                     Toast.makeText(getContext(), "Введите данные", Toast.LENGTH_SHORT);
             }
@@ -124,8 +119,31 @@ public class NewContactFragment extends Fragment implements NewContactContract.V
 
             contactsPhoto.setImageURI(selectedImageUri);
 
+            InputStream imageStream = null;
+            try {
+                imageStream = getContext().getContentResolver().openInputStream(selectedImageUri);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Bitmap mBitmap = BitmapFactory.decodeStream(imageStream);
+            if (!mBitmap.compress(Bitmap.CompressFormat.JPEG, 75, stream))
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
+
 //        contactsPhoto.setImageURI(selectedImageUri);
         }
+    }
+
+    @Override
+    public void openList() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new TabbedFragment())
+                .commit();
     }
 
     @Override

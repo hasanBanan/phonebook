@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.phonebook.presenter.main.MainActivity;
+import com.example.phonebook.presenter.MainActivity;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View {
 

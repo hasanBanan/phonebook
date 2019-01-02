@@ -27,12 +27,18 @@ public class NewContactPresenter  implements NewContactContract.Presenter {
         new Thread(new Runnable() {
             public void run() {
                 repository.addContact(contact, context);
+                orderOpenList();
             }
         }).start();
     }
 
     @Override
-    public void destroy() {
-
+    public void orderOpenList() {
+        ((NewContactFragment)view).getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.openList();
+            }
+        });
     }
 }

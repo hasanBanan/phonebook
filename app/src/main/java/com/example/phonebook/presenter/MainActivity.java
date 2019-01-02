@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.main;
+package com.example.phonebook.presenter;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;

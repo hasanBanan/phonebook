@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface NewContactContract {
     interface View{
+        void openList();
+
         void showProgressBar();
     }
 
@@ -16,6 +18,6 @@ public interface NewContactContract {
 
         void addContact(Contact contact, Context context);
 
-        void destroy();
+        void orderOpenList();
     }
 }

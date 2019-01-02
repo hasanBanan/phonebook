@@ -20,7 +20,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     public List<Contact> list;
     ContactsListContract.Presenter mPresenter;
     public Context context;
-    Random rnd = new Random();
+    private Random rnd = new Random();
 
     ContactsListAdapter(List<Contact> list, ContactsListContract.Presenter mPresenter) {
         this.list = list;

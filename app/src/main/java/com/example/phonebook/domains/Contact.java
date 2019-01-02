@@ -8,6 +8,7 @@ public class Contact {
     String number;
     Uri iconUri;
     int starred;
+    byte[] imageByteCode;
 
     public Contact(long id, String name, String number, Uri iconUri, int starred) {
         this.id = id;
@@ -15,6 +16,15 @@ public class Contact {
         this.number = number;
         this.iconUri = iconUri;
         this.starred = starred;
+    }
+
+    public Contact(long id, String name, String number, Uri iconUri, int starred, byte[] imageByteCode) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.iconUri = iconUri;
+        this.starred = starred;
+        this.imageByteCode = imageByteCode;
     }
 
     public long getId() {
@@ -55,5 +65,13 @@ public class Contact {
 
     public void setStarred(int starred) {
         this.starred = starred;
+    }
+
+    public byte[] getImageByteCode() {
+        return imageByteCode;
+    }
+
+    public void setImageByteCode(byte[] imageByteCode) {
+        this.imageByteCode = imageByteCode;
     }
 }
