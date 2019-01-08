@@ -161,25 +161,6 @@ public class ContactManager {
 
     public void addContact(Contact contact, Context context){
 
-//        InputStream imageStream = null;
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//
-//        if(contact.getIconUri() != null) {
-//            try {
-//                imageStream = context.getContentResolver().openInputStream(contact.getIconUri());
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Bitmap mBitmap = BitmapFactory.decodeStream(imageStream);
-//            if (!mBitmap.compress(Bitmap.CompressFormat.JPEG, 75, stream))
-//                mBitmap.compress(Bitmap.CompressFormat.PNG, 75, stream);
-//        }
-
-//        ContentValues valuess = new ContentValues();
-//        Uri rawContactUri = context.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, valuess);
-//        long rawContactID = ContentUris.parseId(rawContactUri);
-
         ArrayList<ContentProviderOperation> ops = new ArrayList();
         int rawContactID = ops.size();
 
@@ -216,46 +197,6 @@ public class ContactManager {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
-//        ContentValues valuess = new ContentValues();
-//        Uri rawContactUri = context.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, valuess);
-//        long ret = ContentUris.parseId(rawContactUri);
-//
-//        ContentValues values = new ContentValues();
-//        values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, ret);
-//        values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
-//        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, contact.getNumber());
-//        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM);
-//        context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
-//
-//        values.put(ContactsContract.Contacts.Data.RAW_CONTACT_ID, ret);
-//        values.put(ContactsContract.Contacts.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
-//        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.getName());
-//        context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
-//
-//
-//        InputStream imageStream = null;
-//        try {
-//            imageStream = context.getContentResolver().openInputStream(contact.getIconUri());
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Bitmap mBitmap = BitmapFactory.decodeStream(imageStream);
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        if(!mBitmap.compress(Bitmap.CompressFormat.JPEG , 75, stream))
-//            mBitmap.compress(Bitmap.CompressFormat.PNG , 75, stream);
-//
-//        if(contact.getIconUri() != null) {
-//            values = new ContentValues();
-//
-//            values.put(ContactsContract.Data.RAW_CONTACT_ID, ret);
-//            values.put(ContactsContract.Data.IS_SUPER_PRIMARY, 1);
-//            values.put(ContactsContract.CommonDataKinds.Photo.PHOTO, stream.toByteArray());
-//            values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE);
-//
-//            context.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
-//        }
     }
 
     public static ContactManager getInstance(){

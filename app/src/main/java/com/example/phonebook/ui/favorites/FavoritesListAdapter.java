@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.favorites;
+package com.example.phonebook.ui.favorites;
 
 import android.content.Context;
 import android.graphics.Color;

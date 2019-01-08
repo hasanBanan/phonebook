@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.contacts;
+package com.example.phonebook.ui.contacts;
 
 import android.content.Context;
 import android.graphics.Color;

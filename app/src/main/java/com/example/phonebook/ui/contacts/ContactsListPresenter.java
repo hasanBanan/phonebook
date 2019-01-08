@@ -1,27 +1,26 @@
-package com.example.phonebook.presenter.favorites;
+package com.example.phonebook.ui.contacts;
+
 
 import android.content.Context;
-
 import com.example.phonebook.data.ContactRepository;
 import com.example.phonebook.domains.Contact;
-import com.example.phonebook.presenter.contacts.ContactsListFragment;
 
 import java.util.List;
 
-public class FavoritesListPresenter implements FavoritesListContract.Presenter {
+public class ContactsListPresenter implements ContactsListContract.Presenter {
 
-    private FavoritesListContract.View view;
+    private ContactsListContract.View view;
     private ContactRepository repository;
     private boolean viewChanging = true;
     private Context context;
 
-    public FavoritesListPresenter() {
-        this.repository = ContactRepository.getInstance();
+    public ContactsListPresenter() {
+        repository = ContactRepository.getInstance();
         repository.initPresenter(this);
     }
 
     @Override
-    public void initView(FavoritesListContract.View view) {
+    public void initView(ContactsListContract.View view) {
         this.view = view;
     }
 
@@ -29,9 +28,9 @@ public class FavoritesListPresenter implements FavoritesListContract.Presenter {
     public void loadContacts(final Context context) {
         this.context = context;
 
-        final List<Contact> list = repository.getFavoriteContacts(context);
+        final List<Contact> list = repository.getAllContacts(context);
 
-        ((FavoritesListFragment)view).getActivity().runOnUiThread(new Runnable() {
+        ((ContactsListFragment)view).getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 view.showList(list);

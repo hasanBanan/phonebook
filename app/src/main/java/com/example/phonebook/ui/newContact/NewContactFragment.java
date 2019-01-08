@@ -1,15 +1,12 @@
-package com.example.phonebook.presenter.newContact;
+package com.example.phonebook.ui.newContact;
 
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.phonebook.R;
 import com.example.phonebook.domains.Contact;
-import com.example.phonebook.presenter.tabbed.TabbedFragment;
+import com.example.phonebook.ui.tabbed.TabbedFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#e7e7e7"
-    tools:context=".presenter.newContact.NewContactFragment">
+    tools:context=".ui.newContact.NewContactFragment">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/header"

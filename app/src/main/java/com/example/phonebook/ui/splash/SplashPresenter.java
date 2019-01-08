@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.splash;
+package com.example.phonebook.ui.splash;
 
 public class SplashPresenter implements SplashContract.Presenter {
 

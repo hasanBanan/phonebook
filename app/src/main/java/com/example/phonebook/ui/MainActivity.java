@@ -1,14 +1,13 @@
-package com.example.phonebook.presenter;
+package com.example.phonebook.ui;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.phonebook.R;
-import com.example.phonebook.presenter.newContact.NewContactFragment;
-import com.example.phonebook.presenter.tabbed.TabbedFragment;
+import com.example.phonebook.ui.newContact.NewContactFragment;
+import com.example.phonebook.ui.tabbed.TabbedFragment;
 
 public class MainActivity extends AppCompatActivity{
 

@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.favorites;
+package com.example.phonebook.ui.contacts;
 
 
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.phonebook.R;
 import com.example.phonebook.domains.Contact;
@@ -21,18 +22,18 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritesListFragment extends Fragment implements FavoritesListContract.View {
+public class ContactsListFragment extends Fragment implements ContactsListContract.View {
 
-
-    private FavoritesListContract.Presenter mPresenter;
+    private ContactsListContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
-    private FavoritesListAdapter mAdapter;
+    private ProgressBar progressBar;
+    private ContactsListAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = new FavoritesListPresenter();
+        mPresenter = new ContactsListPresenter();
         mPresenter.initView(this);
     }
 
@@ -41,10 +42,24 @@ public class FavoritesListFragment extends Fragment implements FavoritesListCont
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts_list, container, false);
 
+        View fab = getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+
         mRecyclerView = view.findViewById(R.id.contacts_list);
         mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext()){
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                } catch (IndexOutOfBoundsException e) {
+                    Log.e("Error", "IndexOutOfBoundsException in RecyclerView happens");
+                }
+            }
+        };
         mRecyclerView.setLayoutManager(layoutManager);
+
+        progressBar = view.findViewById(R.id.progress_bar);
 
         mPresenter.loadContacts(getContext());
 
@@ -60,7 +75,7 @@ public class FavoritesListFragment extends Fragment implements FavoritesListCont
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getGroupId() == 1) {
+        if(item.getGroupId() == 0) {
 
             mPresenter.delete(getContext(), mAdapter.list.get(item.getItemId()).getId());
 
@@ -73,8 +88,13 @@ public class FavoritesListFragment extends Fragment implements FavoritesListCont
 
     @Override
     public void showList(List<Contact> contacts) {
-        mAdapter = new FavoritesListAdapter(contacts, mPresenter);
+        mAdapter = new ContactsListAdapter(contacts, mPresenter);
         mRecyclerView.setAdapter(mAdapter);
         Log.d(this.getTag(), contacts.toString());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

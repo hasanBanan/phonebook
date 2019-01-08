@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.favorites;
+package com.example.phonebook.ui.contacts;
 
 import android.content.Context;
 
@@ -6,13 +6,13 @@ import com.example.phonebook.domains.Contact;
 
 import java.util.List;
 
-public interface FavoritesListContract {
+public interface ContactsListContract {
     interface View{
         void showList(List<Contact> contacts);
     }
 
     interface Presenter{
-        void initView(FavoritesListContract.View view);
+        void initView(ContactsListContract.View view);
 
         void loadContacts(Context context);
 

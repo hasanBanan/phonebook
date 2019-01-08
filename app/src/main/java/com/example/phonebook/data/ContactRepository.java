@@ -1,15 +1,12 @@
 package com.example.phonebook.data;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import com.example.phonebook.data.api.ContactManager;
 import com.example.phonebook.domains.Contact;
-import com.example.phonebook.presenter.contacts.ContactsListContract;
-import com.example.phonebook.presenter.favorites.FavoritesListContract;
+import com.example.phonebook.ui.contacts.ContactsListContract;
+import com.example.phonebook.ui.favorites.FavoritesListContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactRepository {
@@ -42,9 +39,6 @@ public class ContactRepository {
 
     public void addContact(Contact contact, Context context){
         ContactManager.getInstance().addContact(contact, context);
-
-//        fPresenter.dataUpdated();
-//        cPresenter.dataUpdated();
     }
 
     public void initPresenter(ContactsListContract.Presenter presenter){

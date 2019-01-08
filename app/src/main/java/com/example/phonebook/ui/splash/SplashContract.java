@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.splash;
+package com.example.phonebook.ui.splash;
 
 public interface SplashContract {
     interface View{

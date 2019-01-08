@@ -1,4 +1,4 @@
-package com.example.phonebook.presenter.newContact;
+package com.example.phonebook.ui.newContact;
 
 import android.content.Context;
 

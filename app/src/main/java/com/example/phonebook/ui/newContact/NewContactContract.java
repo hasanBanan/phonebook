@@ -1,10 +1,8 @@
-package com.example.phonebook.presenter.newContact;
+package com.example.phonebook.ui.newContact;
 
 import android.content.Context;
 
 import com.example.phonebook.domains.Contact;
-
-import java.util.List;
 
 public interface NewContactContract {
     interface View{
